@@ -25,7 +25,6 @@ public class App {
         Bttn eight  = new Bttn("8", 100, 140, 80, 60);
         Bttn nine   = new Bttn("9", 190, 140, 80, 60);
 
-
         // set sizes
         main_frame.setSize(395, 470);
         main_panel.setSize(395, 470);
@@ -42,7 +41,6 @@ public class App {
         main_panel.add(seven);
         main_panel.add(eight);
         main_panel.add(nine);
-
 
         // make it visible
         main_frame.setVisible(true);
