@@ -5,7 +5,7 @@ import javax.swing.*;
 public class App {
     public static void main(String[] args) throws Exception 
     {   
-        Icon img = new ImageIcon("C:/Users/Matteo/Desktop/bksp.png");
+        Icon img = new ImageIcon("Java_Calculator/src/icons/bksp.png");
 
         // Font definition
         Font SansSerifBold_num  = new Font("SansSerif", Font.BOLD, 30);
