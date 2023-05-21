@@ -1,15 +1,30 @@
-//import javax.swing.*;
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
-public class Bttn extends Button
+public class Bttn extends JButton
 {   
-    public Bttn(String t, int x, int y, int w, int h, Color c, Color tc, Font f)
+    private JTextField T;
+    public Bttn(String t, int x, int y, int w, int h, Color c, Color tc, Font f, Icon img, JTextField txt)
     {
-        setLabel(t);
+        
+        setText(t);
         setBounds(x, y, w, h);
         setBackground(c);
         setForeground(tc);
         setFocusable(false);
         setFont(f);
+        setIcon(img);
+        setBorder(null);
+        T = txt;
+        addActionListener(new BttnListn());
+    }
+
+    private class BttnListn implements ActionListener
+    {
+        public void actionPerformed(ActionEvent e)
+        {
+            T.setText(getText());
+        }
     }
 }
