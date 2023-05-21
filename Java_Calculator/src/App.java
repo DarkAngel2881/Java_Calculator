@@ -1,11 +1,172 @@
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.*;
+
+public class App 
+{   
+    static JTextField T;
+    static Bttn bksp, del, brks, prc, div, per, pl_min, pnt, eq, minus, plus;
+    static Bttn zero, one, two, three, four, five, six, seven, eight, nine;
+    String last, current, op;
 
 
-public class App {
+    public void createNewOutput() 
+    {
+        if (current.length() > 0) 
+        {
+            String bfcm = current.split("\\.")[0];
+            String afcm = current.split("\\.")[1];
+            if (afcm.equals("0")) 
+            {
+                current = bfcm;
+            }
+        }
+    }
+
+    public void bksp()
+    {
+        if (current.length() > 0)
+        {
+            current = current.substring(0, current.length() - 1);
+        }
+    }
+
+    public void clr()
+    {
+        last = "";
+        current = "";
+        op = "";
+    }
+
+    public void updOutput()
+    {   
+        current = current.replace("null", "");
+        T.setText(current);
+    }
+
+    public void appndOutput(String n)
+    {
+        if (n.equals(".") && current.contains("."))
+        {
+            return;
+        }
+        if (n != "")
+        {   
+            current += n;
+        }
+        
+    }
+
+    public void setop(String newOp)
+    {
+        if (current.isEmpty())
+        {
+            op = newOp;
+            return;
+        }
+        try
+        {
+            if (!last.isEmpty())
+            {
+                eval();
+            }
+        }
+        catch(Exception NullPointerException)
+        {
+            
+        }
+        
+
+        op = newOp;
+        last = current;
+        current = "";
+    }
+
+    
+    private class BttnListn implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            JButton bttn = (JButton) e.getSource();
+            if (bttn == plus)
+            {
+                setop(plus.getText());
+            }
+            else if (bttn == minus)
+            {
+                setop(minus.getText());
+            }
+            else if (bttn == per)
+            {
+                setop(per.getText());
+            }
+            else if (bttn == div)
+            {
+                setop(div.getText());
+            }
+            else if (bttn == bksp)
+            {
+                bksp();
+            }
+            else if (bttn == del)
+            {
+                clr();
+            }
+            else if (bttn == eq)
+            {
+                eval();
+            }
+            else 
+            {
+                appndOutput(bttn.getText());
+            }
+            updOutput();
+        }
+    }
+
+
+
+    public void eval()
+    {
+        if (last.length() < 1 || current.length() < 1)
+        {
+            return;
+        }
+        double result = 0.0;
+        double num1 = Double.parseDouble(last);
+        double num2 = Double.parseDouble(current);
+        switch (op)
+        {
+            case "+":
+                result = num1 + num2;
+                break;
+            case "-":
+                result = num1 - num2;
+                break;
+            case "×":
+                result = num1 * num2;
+                break;
+            case "÷":
+                result = num1 / num2;
+                break;
+            default:
+                break;
+        }
+
+        current = String.valueOf(result);
+        op = null;
+        last = "";
+        createNewOutput();
+    }
+
+
     public static void main(String[] args) throws Exception 
     {   
-        Icon img = new ImageIcon("Java_Calculator/src/icons/bksp.png");
+        App newApp = new App();
+        BttnListn Listener = newApp.new BttnListn();
+
+        Icon img = new ImageIcon("C:/Users/Matteo/Desktop/ /Java Projects/Java_Calculator/Java_Calculator/Java_Calculator/src/bksp.png");
 
         // Font definition
         Font SansSerifBold_num  = new Font("SansSerif", Font.BOLD, 30);
@@ -20,7 +181,6 @@ public class App {
         JPanel main_panel = new JPanel(null);
 
         // create the text field
-        JTextField T;
         T = new JTextField(30);
         T.setBounds(5, 30, 355, 50);
         T.setBackground(Color.black);
@@ -30,29 +190,29 @@ public class App {
         T.setFont(SansSerifBold_num);
 
         //  create figures buttons
-        Bttn zero   = new Bttn("0" , 100, 450, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T);
-        Bttn one    = new Bttn("1" , 10 , 380, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T);
-        Bttn two    = new Bttn("2" , 100, 380, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T);
-        Bttn three  = new Bttn("3" , 190, 380, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T);
-        Bttn four   = new Bttn("4" , 10 , 310, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T);
-        Bttn five   = new Bttn("5" , 100, 310, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T);
-        Bttn six    = new Bttn("6" , 190, 310, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T);
-        Bttn seven  = new Bttn("7" , 10 , 240, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T);
-        Bttn eight  = new Bttn("8" , 100, 240, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T);
-        Bttn nine   = new Bttn("9" , 190, 240, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T);
+        zero   = new Bttn("0" , 100, 450, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
+        one    = new Bttn("1" , 10 , 380, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
+        two    = new Bttn("2" , 100, 380, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
+        three  = new Bttn("3" , 190, 380, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
+        four   = new Bttn("4" , 10 , 310, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
+        five   = new Bttn("5" , 100, 310, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
+        six    = new Bttn("6" , 190, 310, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
+        seven  = new Bttn("7" , 10 , 240, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
+        eight  = new Bttn("8" , 100, 240, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
+        nine   = new Bttn("9" , 190, 240, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
 
         // create operators buttons
-        Bttn bksp   = new Bttn(""  , 280, 90 , 80, 59, Color.black   , Color.black, SansSerifBold_op, img,null);
-        Bttn del    = new Bttn("C" , 10 , 170, 80, 60, Color.darkGray, Color.red  , SansSerifBold_op, null, T );
-        Bttn brks   = new Bttn("()", 100, 170, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T );
-        Bttn prc    = new Bttn("%" , 190, 170, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T );
-        Bttn div    = new Bttn("÷" , 280, 170, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T );
-        Bttn per    = new Bttn("×" , 280, 240, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T );
-        Bttn pl_min = new Bttn("±" , 10 , 450, 80, 60, Color.darkGray, Color.white, SansSerifBold_op, null, T );
-        Bttn comma  = new Bttn("," , 190, 450, 80, 60, Color.darkGray, Color.white, SansSerifBold_op, null, T );
-        Bttn eq     = new Bttn("=" , 280, 450, 80, 60, Color.green   , Color.white, SansSerifBold_op, null, T );
-        Bttn minus  = new Bttn("-" , 280, 310, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T );
-        Bttn plus   = new Bttn("+" , 280, 380, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T );
+        bksp   = new Bttn(""  , 280, 90 , 80, 59, Color.black   , Color.black, SansSerifBold_op, img     , T, Listener);
+        del    = new Bttn("C" , 10 , 170, 80, 60, Color.darkGray, Color.red  , SansSerifBold_op, null, T, Listener);
+        brks   = new Bttn("()", 100, 170, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T, Listener);
+        prc    = new Bttn("%" , 190, 170, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T, Listener);
+        div    = new Bttn("÷" , 280, 170, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T, Listener);
+        per    = new Bttn("×" , 280, 240, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T, Listener);
+        pl_min = new Bttn("±" , 10 , 450, 80, 60, Color.darkGray, Color.white, SansSerifBold_op, null, T, Listener);
+        pnt  = new Bttn("." , 190, 450, 80, 60, Color.darkGray, Color.white, SansSerifBold_op, null, T, Listener);
+        eq     = new Bttn("=" , 280, 450, 80, 60, Color.green   , Color.white, SansSerifBold_op, null, T, Listener);
+        minus  = new Bttn("-" , 280, 310, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T, Listener);
+        plus   = new Bttn("+" , 280, 380, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T, Listener);
     
         
         // line for aesthetics
@@ -87,7 +247,7 @@ public class App {
         main_panel.add(div);
         main_panel.add(eq);
         main_panel.add(pl_min);
-        main_panel.add(comma);
+        main_panel.add(pnt);
         main_panel.add(prc);
         main_panel.add(brks);
         main_panel.add(del);
