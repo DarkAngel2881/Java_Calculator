@@ -1,13 +1,15 @@
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.*;
+import java.lang.Math;
 
 public class App 
 {   
     static JTextField T;
-    static Bttn bksp, del, brks, prc, div, per, pl_min, pnt, eq, minus, plus;
+    static Bttn bksp, del, rais, prc, div, per, pl_min, pnt, eq, minus, plus;
     static Bttn zero, one, two, three, four, five, six, seven, eight, nine;
     String last, current, op;
+    Boolean flag = false;
 
 
     public void createNewOutput() 
@@ -42,19 +44,32 @@ public class App
     {   
         current = current.replace("null", "");
         T.setText(current);
+        current = current.replace("Math Error!", "");
     }
 
     public void appndOutput(String n)
-    {
-        if (n.equals(".") && current.contains("."))
+    {   
+        if(flag)
+        {
+            current = current.replace("0", n);
+            flag = false;
+        }
+        else if (n.equals(".") && current.contains("."))
         {
             return;
         }
-        if (n != "")
+        else if (n.equals("."))
+        {
+            current += ".0";
+            flag = true;
+            
+        }
+        else if (n != "")
         {   
             current += n;
+            flag = false;
         }
-        
+
     }
 
     public void setop(String newOp)
@@ -82,6 +97,10 @@ public class App
         current = "";
     }
 
+    public void neg()
+    {
+        current =   current + "-";
+    }
     
     private class BttnListn implements ActionListener
     {
@@ -104,6 +123,18 @@ public class App
             else if (bttn == div)
             {
                 setop(div.getText());
+            }
+            else if (bttn == rais)
+            {
+                setop(rais.getText());
+            }
+            else if (bttn == prc)
+            {
+                setop(prc.getText());
+            }
+            else if (bttn == pl_min)
+            {
+                neg();
             }
             else if (bttn == bksp)
             {
@@ -148,8 +179,22 @@ public class App
                 result = num1 * num2;
                 break;
             case "÷":
-                result = num1 / num2;
+                if(num2 == 0)
+                {
+                    clr();
+                    current = "Math Error!";
+                    return;
+                }
+                else
+                {
+                    result = num1 / num2;
+                }
                 break;
+            case "xⁿ":
+                result = Math.pow(num1, num2);
+                break;
+            case "%":
+                result = (num2/100)*num1;
             default:
                 break;
         }
@@ -204,12 +249,12 @@ public class App
         // create operators buttons
         bksp   = new Bttn(""  , 280, 90 , 80, 59, Color.black   , Color.black, SansSerifBold_op, img     , T, Listener);
         del    = new Bttn("C" , 10 , 170, 80, 60, Color.darkGray, Color.red  , SansSerifBold_op, null, T, Listener);
-        brks   = new Bttn("()", 100, 170, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T, Listener);
+        rais   = new Bttn("xⁿ", 100, 170, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T, Listener);
         prc    = new Bttn("%" , 190, 170, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T, Listener);
         div    = new Bttn("÷" , 280, 170, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T, Listener);
         per    = new Bttn("×" , 280, 240, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T, Listener);
         pl_min = new Bttn("±" , 10 , 450, 80, 60, Color.darkGray, Color.white, SansSerifBold_op, null, T, Listener);
-        pnt  = new Bttn("." , 190, 450, 80, 60, Color.darkGray, Color.white, SansSerifBold_op, null, T, Listener);
+        pnt    = new Bttn("." , 190, 450, 80, 60, Color.darkGray, Color.white, SansSerifBold_op, null, T, Listener);
         eq     = new Bttn("=" , 280, 450, 80, 60, Color.green   , Color.white, SansSerifBold_op, null, T, Listener);
         minus  = new Bttn("-" , 280, 310, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T, Listener);
         plus   = new Bttn("+" , 280, 380, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T, Listener);
@@ -249,7 +294,7 @@ public class App
         main_panel.add(pl_min);
         main_panel.add(pnt);
         main_panel.add(prc);
-        main_panel.add(brks);
+        main_panel.add(rais);
         main_panel.add(del);
         main_panel.add(bksp);
 
