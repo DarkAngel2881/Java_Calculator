@@ -5,7 +5,7 @@ import java.lang.Math;
 
 public class App 
 {   
-    static JTextField T;
+    static JTextField T, t;
     static Bttn bksp, del, rais, prc, div, per, pl_min, pnt, eq, minus, plus;
     static Bttn zero, one, two, three, four, five, six, seven, eight, nine;
     String last, current, op;
@@ -55,6 +55,21 @@ public class App
             T.setText(current);
         }
         current = current.replace("Math Error!", "");
+        String expr = "";
+        if(op == "")
+        {
+            expr = current;
+        }
+        else if(op != "" && current == "")
+        {
+            expr = op + last;
+        }
+        else 
+        {
+            expr = last + op + current;
+        }
+        expr = expr.replace("null", "");
+        t.setText(expr);
     }
 
     public void appndOutput(String n)
@@ -138,7 +153,7 @@ public class App
             }
             else if (bttn == rais)
             {
-                setop(rais.getText());
+                setop("^");
             }
             else if (bttn == prc)
             {
@@ -202,7 +217,7 @@ public class App
                     result = num1 / num2;
                 }
                 break;
-            case "xⁿ":
+            case "^":
                 result = Math.pow(num1, num2);
                 break;
             case "%":
@@ -226,8 +241,9 @@ public class App
         Icon img = new ImageIcon("C:/Users/Matteo/Desktop/ /Java Projects/Java_Calculator/Java_Calculator/Java_Calculator/src/bksp.png");
 
         // Font definition
-        Font SansSerifBold_num  = new Font("SansSerif", Font.BOLD, 30);
-        Font SansSerifBold_op   = new Font("SansSerif", Font.PLAIN, 30);
+        Font SansSerifBold_num    = new Font("SansSerif", Font.BOLD , 30);
+        Font SansSerifBold_op     = new Font("SansSerif", Font.PLAIN, 30);
+        Font SansSerifBold_expr   = new Font("SansSerif", Font.BOLD, 18);
 
 
         // create the calculator frame
@@ -246,30 +262,39 @@ public class App
         T.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         T.setFont(SansSerifBold_num);
 
+        // create text field expression handler
+        t = new JTextField(30);
+        t.setBounds(5, 80, 355, 30);
+        t.setBackground(Color.black);
+        t.setForeground(Color.white);
+        t.setBorder(null);
+        t.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
+        t.setFont(SansSerifBold_expr);
+
         //  create figures buttons
-        zero   = new Bttn("0" , 100, 450, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
-        one    = new Bttn("1" , 10 , 380, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
-        two    = new Bttn("2" , 100, 380, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
-        three  = new Bttn("3" , 190, 380, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
-        four   = new Bttn("4" , 10 , 310, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
-        five   = new Bttn("5" , 100, 310, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
-        six    = new Bttn("6" , 190, 310, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
-        seven  = new Bttn("7" , 10 , 240, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
-        eight  = new Bttn("8" , 100, 240, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
-        nine   = new Bttn("9" , 190, 240, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, T, Listener);
+        zero   = new Bttn("0" , 100, 450, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, Listener);
+        one    = new Bttn("1" , 10 , 380, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, Listener);
+        two    = new Bttn("2" , 100, 380, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, Listener);
+        three  = new Bttn("3" , 190, 380, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, Listener);
+        four   = new Bttn("4" , 10 , 310, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, Listener);
+        five   = new Bttn("5" , 100, 310, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, Listener);
+        six    = new Bttn("6" , 190, 310, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, Listener);
+        seven  = new Bttn("7" , 10 , 240, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, Listener);
+        eight  = new Bttn("8" , 100, 240, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, Listener);
+        nine   = new Bttn("9" , 190, 240, 80, 60, Color.darkGray, Color.white, SansSerifBold_num, null, Listener);
 
         // create operators buttons
-        bksp   = new Bttn(""  , 280, 90 , 80, 59, Color.black   , Color.black, SansSerifBold_op, img     , T, Listener);
-        del    = new Bttn("C" , 10 , 170, 80, 60, Color.darkGray, Color.red  , SansSerifBold_op, null, T, Listener);
-        rais   = new Bttn("xⁿ", 100, 170, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T, Listener);
-        prc    = new Bttn("%" , 190, 170, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T, Listener);
-        div    = new Bttn("÷" , 280, 170, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T, Listener);
-        per    = new Bttn("×" , 280, 240, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T, Listener);
-        pl_min = new Bttn("±" , 10 , 450, 80, 60, Color.darkGray, Color.white, SansSerifBold_op, null, T, Listener);
-        pnt    = new Bttn("." , 190, 450, 80, 60, Color.darkGray, Color.white, SansSerifBold_op, null, T, Listener);
-        eq     = new Bttn("=" , 280, 450, 80, 60, Color.green   , Color.white, SansSerifBold_op, null, T, Listener);
-        minus  = new Bttn("-" , 280, 310, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T, Listener);
-        plus   = new Bttn("+" , 280, 380, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, T, Listener);
+        bksp   = new Bttn(""  , 296, 116, 45, 29, Color.black   , Color.black, SansSerifBold_op, img     , Listener);
+        del    = new Bttn("C" , 10 , 170, 80, 60, Color.darkGray, Color.red  , SansSerifBold_op, null, Listener);
+        rais   = new Bttn("xⁿ", 100, 170, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, Listener);
+        prc    = new Bttn("%" , 190, 170, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, Listener);
+        div    = new Bttn("÷" , 280, 170, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, Listener);
+        per    = new Bttn("×" , 280, 240, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, Listener);
+        pl_min = new Bttn("±" , 10 , 450, 80, 60, Color.darkGray, Color.white, SansSerifBold_op, null, Listener);
+        pnt    = new Bttn("." , 190, 450, 80, 60, Color.darkGray, Color.white, SansSerifBold_op, null, Listener);
+        eq     = new Bttn("=" , 280, 450, 80, 60, Color.green   , Color.white, SansSerifBold_op, null, Listener);
+        minus  = new Bttn("-" , 280, 310, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, Listener);
+        plus   = new Bttn("+" , 280, 380, 80, 60, Color.darkGray, Color.green, SansSerifBold_op, null, Listener);
     
         
         // line for aesthetics
@@ -287,6 +312,7 @@ public class App
         // add everithing in the panel and frame
         main_frame.add(main_panel);
         main_panel.add(T);
+        main_panel.add(t);
         main_panel.add(line);
         main_panel.add(zero);
         main_panel.add(one);

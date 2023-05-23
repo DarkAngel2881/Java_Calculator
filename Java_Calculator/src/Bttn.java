@@ -4,8 +4,7 @@ import java.awt.event.*;
 
 public class Bttn extends JButton
 {   
-    private JTextField T;
-    public Bttn(String t, int x, int y, int w, int h, Color c, Color tc, Font f, Icon img, JTextField txt, ActionListener BttnListenr)
+    public Bttn(String t, int x, int y, int w, int h, Color c, Color tc, Font f, Icon img, ActionListener BttnListenr)
     {
         
         setText(t);
@@ -16,7 +15,6 @@ public class Bttn extends JButton
         setFont(f);
         setIcon(img);
         setBorder(null);
-        T = txt;
         addActionListener(BttnListenr);
     }
 
