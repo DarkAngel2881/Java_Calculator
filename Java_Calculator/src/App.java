@@ -43,7 +43,17 @@ public class App
     public void updOutput()
     {   
         current = current.replace("null", "");
-        T.setText(current);
+        if(current.contains("-"))
+        {
+            String t;
+            t = current.replace("-", "") + " ";
+            t = t.replace(" ", "-");
+            T.setText(t);
+        }
+        else
+        {
+            T.setText(current);
+        }
         current = current.replace("Math Error!", "");
     }
 
@@ -99,7 +109,9 @@ public class App
 
     public void neg()
     {
-        current =   current + "-";
+        
+            current =   "-"+ current;
+        
     }
     
     private class BttnListn implements ActionListener
