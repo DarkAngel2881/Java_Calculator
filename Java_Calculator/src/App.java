@@ -8,8 +8,9 @@ public class App
     static JTextField T, t;
     static Bttn bksp, del, rais, prc, div, per, pl_min, pnt, eq, minus, plus;
     static Bttn zero, one, two, three, four, five, six, seven, eight, nine;
-    String last, current, op;
+    String last, current, op, symb;
     Boolean flag = false;
+    double num1, num2;
 
 
     public void createNewOutput() 
@@ -40,7 +41,7 @@ public class App
         op = "";
     }
 
-    public void updOutput()
+    public void updOutput(Boolean is_op_eq)
     {   
         current = current.replace("null", "");
         if(current.contains("-"))
@@ -55,21 +56,41 @@ public class App
             T.setText(current);
         }
         current = current.replace("Math Error!", "");
-        String expr = "";
-        if(op == "")
+        /*String expr = "";
+        if (is_op_eq)
         {
-            expr = current;
+            expr = num2+ symb + num1;
         }
         else if(op != "" && current == "")
         {
             expr = op + last;
         }
-        else 
+        else
         {
-            expr = last + op + current;
+            expr = current + op + last;
         }
         expr = expr.replace("null", "");
-        t.setText(expr);
+        if(expr.contains("-"))
+        {   
+            if(num1 < 0 && num2<0)
+            {
+                String T;
+                T = expr.replace("-", "");
+                T = "(" + T + ")-";
+                t.setText(T);
+            }
+            else
+            {
+                String T;
+                T = expr.replace("-", "") + " ";
+                T = T.replace(" ", "-");
+                t.setText(T);
+            }
+        }
+        else
+        {
+            t.setText(expr);
+        }*/
     }
 
     public void appndOutput(String n)
@@ -135,6 +156,7 @@ public class App
         public void actionPerformed(ActionEvent e)
         {
             JButton bttn = (JButton) e.getSource();
+            Boolean is_op_eq = false;
             if (bttn == plus)
             {
                 setop(plus.getText());
@@ -174,12 +196,13 @@ public class App
             else if (bttn == eq)
             {
                 eval();
+                is_op_eq = true;
             }
             else 
             {
                 appndOutput(bttn.getText());
             }
-            updOutput();
+            updOutput(is_op_eq);
         }
     }
 
@@ -192,8 +215,9 @@ public class App
             return;
         }
         double result = 0.0;
-        double num1 = Double.parseDouble(last);
-        double num2 = Double.parseDouble(current);
+        num1 = Double.parseDouble(last);
+        num2 = Double.parseDouble(current);
+        symb = op;
         switch (op)
         {
             case "+":
@@ -223,6 +247,7 @@ public class App
             case "%":
                 result = (num2/100)*num1;
             default:
+            
                 break;
         }
 
